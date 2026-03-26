@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Earning App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="font-family:sans-serif; text-align:center;">
+
+<h2>💰 Earning App</h2>
+
+<h3>📤 Submit Report</h3>
+
+<form id="reportForm">
+
+  <input type="text" id="name" placeholder="Enter Name" required><br><br>
+
+  <input type="text" id="phone" placeholder="Enter Phone" required><br><br>
+
+  <select id="app">
+    <option>Angel One</option>
+    <option>Upstox</option>
+  </select><br><br>
+
+  <button type="submit">Submit</button>
+
+</form>
+
+<p id="msg"></p>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASZMZt9zXTAd0bnY2mTrNnYw07hqdnkcQ",
+    authDomain: "earning-app-c7c1f.firebaseapp.com",
+    projectId: "earning-app-c7c1f",
+    storageBucket: "earning-app-c7c1f.firebasestorage.app",
+    messagingSenderId: "115832886785",
+    appId: "1:115832886785:web:641b1fa50fbaf92da8d200",
+    measurementId: "G-YTSTEHZENS"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  document.getElementById("reportForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let phone = document.getElementById("phone").value;
+    let appName = document.getElementById("app").value;
+
+    await addDoc(collection(db, "reports"), {
+      name: name,
+      phone: phone,
+      app: appName,
+      status: "Pending"
+    });
+
+    document.getElementById("msg").innerText = "✅ Submitted Successfully!";
+  });
+</script>
+
+</body>
+</html>
