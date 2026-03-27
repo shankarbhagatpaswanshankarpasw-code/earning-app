@@ -1,67 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Earning App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-
-<body style="font-family:sans-serif; text-align:center;">
-
-<h2>💰 Earning App</h2>
-
-<h3>📤 Submit Report</h3>
-
-<form id="reportForm">
-
-  <input type="text" id="name" placeholder="Enter Name" required><br><br>
-
-  <input type="text" id="phone" placeholder="Enter Phone" required><br><br>
-
-  <select id="app">
-    <option>Angel One</option>
-    <option>Upstox</option>
-  </select><br><br>
-
-  <button type="submit">Submit</button>
-
-</form>
-
-<p id="msg"></p>
-
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyASZMZt9zXTAd0bnY2mTrNnYw07hqdnkcQ",
-    authDomain: "earning-app-c7c1f.firebaseapp.com",
-    projectId: "earning-app-c7c1f",
-    storageBucket: "earning-app-c7c1f.firebasestorage.app",
-    messagingSenderId: "115832886785",
-    appId: "1:115832886785:web:641b1fa50fbaf92da8d200",
-    measurementId: "G-YTSTEHZENS"
-  };
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_PROJECT_ID"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  document.getElementById("reportForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+// SIGNUP
+window.signup = async function(){
+  try{
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-    let name = document.getElementById("name").value;
-    let phone = document.getElementById("phone").value;
-    let appName = document.getElementById("app").value;
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-    await addDoc(collection(db, "reports"), {
-      name: name,
-      phone: phone,
-      app: appName,
-      status: "Pending"
+    await setDoc(doc(db, "users", user.uid), {
+      email: email,
+      balance: 0,
+      referral: user.uid
     });
 
-    document.getElementById("msg").innerText = "✅ Submitted Successfully!";
-  });
-</script>
+    alert("Signup Successful ✅");
+    window.location = "dashboard.html";
 
-</body>
-</html>
+  }catch(err){
+    alert(err.message);
+  }
+}
+
+// LOGIN
+window.login = async function(){
+  try{
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    await signInWithEmailAndPassword(auth, email, password);
+    window.location = "dashboard.html";
+
+  }catch(err){
+    alert(err.message);
+  }
+}
+</script>
