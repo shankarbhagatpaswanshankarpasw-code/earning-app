@@ -1,7 +1,8 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login / Signup</title>
+  <title>Earning App</title>
 </head>
 <body>
 
@@ -14,23 +15,29 @@
 <button onclick="login()">Login</button>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, setDoc } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } 
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+// 🔥 YOUR FIREBASE CONFIG
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_PROJECT_ID"
+  apiKey: "AIzaSyASZMZt9zXTAd0bnY2mTrNnYw07hqdnkcQ",
+  authDomain: "earning-app-c7c1f.firebaseapp.com",
+  projectId: "earning-app-c7c1f",
+  storageBucket: "earning-app-c7c1f.firebasestorage.app",
+  messagingSenderId: "115832886785",
+  appId: "1:115832886785:web:be6a2595f08f3f86a8d200"
 };
 
+// INIT
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// SIGNUP
+// ✅ SIGNUP FUNCTION
 window.signup = async function(){
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -58,7 +65,7 @@ window.signup = async function(){
   }
 }
 
-// LOGIN
+// ✅ LOGIN FUNCTION
 window.login = async function(){
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -66,10 +73,12 @@ window.login = async function(){
   try{
     await signInWithEmailAndPassword(auth, email, password);
     window.location = "dashboard.html";
+
   }catch(err){
     alert(err.message);
   }
 }
+
 </script>
 
 </body>
